@@ -14,59 +14,52 @@
 body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--parchment); color: var(--ink); }
 .app { max-width: 1020px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
 
-/* HEADER */
 .header { text-align: center; padding: 2rem 0 2.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
 .header-badge { display: inline-block; background: var(--warm-brown); color: #f5edda; font-size: 11px; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
-.header h1 { font-size: 30px; font-weight: 700; color: var(--warm-brown); letter-spacing: -0.5px; }
+.header h1 { font-size: 30px; font-weight: 700; color: var(--warm-brown); }
 .header p { font-size: 13px; color: var(--muted); margin-top: 6px; }
-
-/* API STATUS */
 .api-status { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); justify-content: center; margin-top: 10px; }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; }
-.dot.online { background: #2d6a4f; }
-.dot.offline { background: var(--danger); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
+.dot.online { background: #2d6a4f; } .dot.offline { background: var(--danger); } .dot.checking { background: var(--gold); }
 
-/* STATS */
+/* CONFIG BANNER */
+.config-banner { background: #fff3cd; border: 1px solid #e8c46a; border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 1.5rem; }
+.config-banner h3 { font-size: 14px; font-weight: 600; color: #7d5200; margin-bottom: 8px; }
+.config-banner p { font-size: 13px; color: #7d5200; margin-bottom: 10px; }
+.config-banner input { width: 100%; padding: 8px 12px; border: 1px solid #e8c46a; border-radius: 8px; font-size: 13px; margin-bottom: 8px; background: #fffdf5; }
+.config-banner .btn-row { display: flex; gap: 8px; }
+
 .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 2rem; }
 .stat-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
 .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 7px; }
 .stat-value { font-size: 26px; font-weight: 700; color: var(--warm-brown); }
-.stat-value.danger { color: var(--danger); }
-.stat-value.success { color: var(--success); }
+.stat-value.danger { color: var(--danger); } .stat-value.success { color: var(--success); }
 
-/* TABS */
-.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; flex-wrap: wrap; }
 .tab { padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; border-radius: 8px 8px 0 0; border: 1px solid transparent; border-bottom: none; color: var(--muted); background: transparent; margin-bottom: -1px; }
 .tab.active { background: var(--card-bg); border-color: var(--border); color: var(--warm-brown); }
-.panel { display: none; }
-.panel.active { display: block; }
+.panel { display: none; } .panel.active { display: block; }
 
-/* TOOLBAR */
 .toolbar { display: flex; gap: 10px; margin-bottom: 1.2rem; flex-wrap: wrap; }
 .toolbar input, .toolbar select { flex: 1; min-width: 140px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 13px; color: var(--ink); outline: none; }
 .toolbar input:focus, .toolbar select:focus { border-color: var(--gold); }
 .toolbar select { max-width: 160px; }
 
-/* BUTTONS */
-.btn { background: var(--warm-brown); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
-.btn:hover { background: #5a3520; }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn { background: var(--warm-brown); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+.btn:hover { background: #5a3520; } .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-outline { background: transparent; color: var(--warm-brown); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer; }
 .btn-outline:hover { background: var(--cream); }
 .btn-sm { padding: 4px 11px; font-size: 12px; border-radius: 6px; }
-.btn-danger { background: var(--danger); }
-.btn-danger:hover { background: #7d1c2a; }
-.btn-success { background: var(--success); }
-.btn-success:hover { background: #1f4d38; }
+.btn-danger { background: var(--danger); } .btn-danger:hover { background: #7d1c2a; }
+.btn-success { background: var(--success); } .btn-success:hover { background: #1f4d38; }
+.btn-gold { background: var(--gold); color: #fff; } .btn-gold:hover { background: #a87820; }
 
-/* TABLE */
 table { width: 100%; border-collapse: collapse; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; font-size: 13px; }
 thead { background: var(--cream); }
 th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); font-weight: 500; padding: 10px 13px; text-align: left; }
 td { padding: 10px 13px; border-top: 1px solid var(--border); }
 tr:hover td { background: rgba(200,146,42,0.04); }
 
-/* BADGES */
 .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
 .badge-available { background: #d4edda; color: #1a5c33; }
 .badge-issued { background: #fde8d4; color: #8c3a0c; }
@@ -76,9 +69,8 @@ tr:hover td { background: rgba(200,146,42,0.04); }
 .due-soon { color: #b85c00; font-weight: 500; }
 .overdue-text { color: var(--danger); font-weight: 500; }
 
-/* MODAL */
 .modal-backdrop { position: fixed; inset: 0; background: rgba(26,18,9,0.45); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
-.modal { background: var(--parchment); border-radius: 14px; padding: 1.8rem; width: 100%; max-width: 500px; border: 1px solid var(--border); }
+.modal { background: var(--parchment); border-radius: 14px; padding: 1.8rem; width: 100%; max-width: 500px; border: 1px solid var(--border); max-height: 90vh; overflow-y: auto; }
 .modal h2 { font-size: 20px; font-weight: 700; color: var(--warm-brown); margin-bottom: 1.4rem; }
 .form-row { margin-bottom: 0.9rem; }
 .form-row label { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
@@ -86,32 +78,25 @@ tr:hover td { background: rgba(200,146,42,0.04); }
 .form-row input:focus, .form-row select:focus { border-color: var(--gold); }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
 .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 1.4rem; }
-.modal-close { float: right; background: none; border: none; font-size: 20px; color: var(--muted); cursor: pointer; line-height: 1; }
+.modal-close { float: right; background: none; border: none; font-size: 22px; color: var(--muted); cursor: pointer; }
 
-/* ALERTS */
 .alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 1rem; }
 .alert-warning { background: #fff3cd; color: #7d5200; border: 1px solid #e8c46a; }
 .alert-info { background: #d4edda; color: #1a5c33; border: 1px solid #a3d3b0; }
 .alert-error { background: #fcd4d4; color: var(--danger); border: 1px solid #f7c1c1; }
 
-/* LOADING */
 .loading { text-align: center; padding: 2rem; color: var(--muted); font-size: 13px; }
-.spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--warm-brown); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+.spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--warm-brown); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* ACTION BTNS */
 .action-btns { display: flex; gap: 5px; }
 
-/* TOAST */
-#toast { position: fixed; bottom: 24px; right: 24px; background: #1a1209; color: #fff; padding: 10px 18px; border-radius: 10px; font-size: 13px; opacity: 0; transition: opacity 0.3s; z-index: 999; pointer-events: none; }
+#toast { position: fixed; bottom: 24px; right: 24px; background: #1a1209; color: #fff; padding: 10px 18px; border-radius: 10px; font-size: 13px; opacity: 0; transition: opacity 0.3s; z-index: 999; pointer-events: none; max-width: 300px; }
 #toast.show { opacity: 1; }
-
-/* HISTORY */
-.history-pill { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 11px; }
 
 @media (max-width: 700px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .form-grid { grid-template-columns: 1fr; }
+  th:nth-child(4), td:nth-child(4), th:nth-child(6), td:nth-child(6) { display: none; }
 }
 </style>
 </head>
@@ -119,12 +104,23 @@ tr:hover td { background: rgba(200,146,42,0.04); }
 <div class="app">
 
   <div class="header">
-    <div class="header-badge">Library System</div>
+    <div class="header-badge">Google Sheets Backend</div>
     <h1>Library Management System</h1>
-    <p>Manage books, issuances, and due dates</p>
+    <p>Powered by Google Sheets — data saved forever, free</p>
     <div class="api-status">
-      <div class="dot" id="apiDot"></div>
-      <span id="apiStatusText">Connecting to API...</span>
+      <div class="dot checking" id="apiDot"></div>
+      <span id="apiStatusText">Waiting for API URL...</span>
+    </div>
+  </div>
+
+  <!-- CONFIG BANNER -->
+  <div class="config-banner" id="configBanner">
+    <h3>One-time Setup — Paste your Google Apps Script URL</h3>
+    <p>After deploying your Apps Script as a Web App, paste the URL below. This is saved in your browser so you only do this once.</p>
+    <input type="text" id="apiUrlInput" placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec">
+    <div class="btn-row">
+      <button class="btn btn-gold" onclick="saveApiUrl()">Save & Connect</button>
+      <button class="btn-outline" onclick="document.getElementById('configBanner').style.display='none'">Hide</button>
     </div>
   </div>
 
@@ -143,13 +139,10 @@ tr:hover td { background: rgba(200,146,42,0.04); }
     <button class="tab" onclick="switchTab('history', this)">History</button>
   </div>
 
-  <!-- BOOKS PANEL -->
   <div id="panel-books" class="panel active">
     <div class="toolbar">
       <input type="text" id="searchBooks" placeholder="Search by title or author..." oninput="renderBooks()">
-      <select id="filterCat" onchange="renderBooks()">
-        <option value="">All Categories</option>
-      </select>
+      <select id="filterCat" onchange="renderBooks()"><option value="">All Categories</option></select>
       <select id="filterStatus" onchange="renderBooks()">
         <option value="">All Status</option>
         <option value="available">Available</option>
@@ -157,25 +150,22 @@ tr:hover td { background: rgba(200,146,42,0.04); }
       </select>
       <button class="btn" onclick="openAddBook()">+ Add Book</button>
     </div>
-    <div id="booksContent"><div class="loading"><span class="spinner"></span>Loading books...</div></div>
+    <div id="booksContent"><div class="loading">Paste your API URL above to get started.</div></div>
   </div>
 
-  <!-- ISSUED PANEL -->
   <div id="panel-issued" class="panel">
     <div class="toolbar">
       <input type="text" id="searchIssued" placeholder="Search by title or member..." oninput="renderIssued()">
     </div>
-    <div id="issuedContent"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+    <div id="issuedContent"><div class="loading">Loading...</div></div>
   </div>
 
-  <!-- OVERDUE PANEL -->
   <div id="panel-overdue" class="panel">
-    <div id="overdueContent"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+    <div id="overdueContent"><div class="loading">Loading...</div></div>
   </div>
 
-  <!-- HISTORY PANEL -->
   <div id="panel-history" class="panel">
-    <div id="historyContent"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+    <div id="historyContent"><div class="loading">Loading...</div></div>
   </div>
 </div>
 
@@ -186,17 +176,10 @@ tr:hover td { background: rgba(200,146,42,0.04); }
     <h2 id="modalTitle">Add New Book</h2>
     <div class="form-grid">
       <div class="form-row" style="grid-column:span 2">
-        <label>Book Title *</label>
-        <input id="f-title" type="text" placeholder="Enter book title">
+        <label>Book Title *</label><input id="f-title" type="text" placeholder="Enter book title">
       </div>
-      <div class="form-row">
-        <label>Author *</label>
-        <input id="f-author" type="text" placeholder="Author name">
-      </div>
-      <div class="form-row">
-        <label>ISBN</label>
-        <input id="f-isbn" type="text" placeholder="ISBN number">
-      </div>
+      <div class="form-row"><label>Author *</label><input id="f-author" type="text" placeholder="Author name"></div>
+      <div class="form-row"><label>ISBN</label><input id="f-isbn" type="text" placeholder="ISBN number"></div>
       <div class="form-row">
         <label>Category</label>
         <select id="f-cat">
@@ -205,10 +188,7 @@ tr:hover td { background: rgba(200,146,42,0.04); }
           <option>Biography</option><option>Children</option><option>Reference</option>
         </select>
       </div>
-      <div class="form-row">
-        <label>Total Copies</label>
-        <input id="f-copies" type="number" value="1" min="1">
-      </div>
+      <div class="form-row"><label>Total Copies</label><input id="f-copies" type="number" value="1" min="1"></div>
     </div>
     <div class="modal-actions">
       <button class="btn-outline" onclick="closeModal('addBookModal')">Cancel</button>
@@ -239,82 +219,97 @@ tr:hover td { background: rgba(200,146,42,0.04); }
 <div id="toast"></div>
 
 <script>
-const API = 'http://localhost:5000/api';
+// ── CONFIG ───────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'library_api_url';
+let API_URL = localStorage.getItem(STORAGE_KEY) || '';
 let books = [], issuances = [], editingBookId = null, issuingBookId = null;
-const today = new Date(); today.setHours(0,0,0,0);
+const todayDate = new Date(); todayDate.setHours(0,0,0,0);
+
+function saveApiUrl() {
+  const val = document.getElementById('apiUrlInput').value.trim();
+  if (!val.startsWith('https://script.google.com')) { toast('Please paste a valid Google Apps Script URL', true); return; }
+  API_URL = val;
+  localStorage.setItem(STORAGE_KEY, API_URL);
+  document.getElementById('configBanner').style.display = 'none';
+  toast('API URL saved!');
+  init();
+}
 
 // ── API ──────────────────────────────────────────────────────────────────────
-
-async function apiFetch(path, opts={}) {
-  const res = await fetch(API + path, {
-    headers: { 'Content-Type': 'application/json' },
-    ...opts,
-    body: opts.body ? JSON.stringify(opts.body) : undefined
-  });
+async function apiGet(action) {
+  if (!API_URL) throw new Error('No API URL set');
+  const res = await fetch(`${API_URL}?action=${action}`);
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Request failed');
+  if (data.error) throw new Error(data.error);
   return data;
 }
 
-async function checkApi() {
-  try {
-    await apiFetch('/stats');
-    document.getElementById('apiDot').className = 'dot online';
-    document.getElementById('apiStatusText').textContent = 'API connected · localhost:5000';
-  } catch {
-    document.getElementById('apiDot').className = 'dot offline';
-    document.getElementById('apiStatusText').textContent = 'API offline — start app.py to connect';
-  }
+async function apiPost(payload) {
+  if (!API_URL) throw new Error('No API URL set');
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data;
 }
 
 // ── TOAST ────────────────────────────────────────────────────────────────────
-
 function toast(msg, err=false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.style.background = err ? '#9b2335' : '#1a1209';
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
-
 function daysFromToday(dateStr) {
   const d = new Date(dateStr); d.setHours(0,0,0,0);
-  return Math.round((d - today) / 86400000);
+  return Math.round((d - todayDate) / 86400000);
 }
 function fmtDate(str) {
   if (!str) return '—';
-  return new Date(str).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+  return new Date(str).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
 }
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function setLoading(id, msg='Loading...') {
   document.getElementById(id).innerHTML = `<div class="loading"><span class="spinner"></span>${msg}</div>`;
 }
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+function backdropClose(e, id) { if (e.target === e.currentTarget) closeModal(id); }
+
+// ── STATUS ───────────────────────────────────────────────────────────────────
+function setStatus(online, msg) {
+  document.getElementById('apiDot').className = 'dot ' + (online ? 'online' : 'offline');
+  document.getElementById('apiStatusText').textContent = msg;
+}
 
 // ── STATS ────────────────────────────────────────────────────────────────────
-
 async function loadStats() {
   try {
-    const s = await apiFetch('/stats');
+    const s = await apiGet('getStats');
     document.getElementById('statsGrid').innerHTML = `
       <div class="stat-card"><div class="stat-label">Total Titles</div><div class="stat-value">${s.total_books}</div></div>
       <div class="stat-card"><div class="stat-label">Total Copies</div><div class="stat-value">${s.total_copies}</div></div>
       <div class="stat-card"><div class="stat-label">Available</div><div class="stat-value success">${s.available}</div></div>
       <div class="stat-card"><div class="stat-label">Issued</div><div class="stat-value">${s.total_issued}</div></div>
-      <div class="stat-card"><div class="stat-label">Overdue</div><div class="stat-value danger">${s.overdue}</div></div>
-    `;
+      <div class="stat-card"><div class="stat-label">Overdue</div><div class="stat-value danger">${s.overdue}</div></div>`;
   } catch { /* silent */ }
 }
 
 // ── BOOKS ────────────────────────────────────────────────────────────────────
-
 async function loadBooks() {
+  setLoading('booksContent', 'Loading books from Google Sheets...');
   try {
-    books = await apiFetch('/books');
+    books = await apiGet('getBooks');
     populateCatFilter();
     renderBooks();
+    setStatus(true, 'Connected to Google Sheets');
   } catch(e) {
-    document.getElementById('booksContent').innerHTML = `<div class="alert alert-error">Failed to load books: ${e.message}</div>`;
+    document.getElementById('booksContent').innerHTML = `<div class="alert alert-error">Failed to load: ${e.message}</div>`;
+    setStatus(false, 'Cannot reach Google Sheets API');
   }
 }
 
@@ -329,62 +324,46 @@ function renderBooks() {
   const q = document.getElementById('searchBooks').value.toLowerCase();
   const cat = document.getElementById('filterCat').value;
   const status = document.getElementById('filterStatus').value;
-
   const filtered = books.filter(b => {
     const matchQ = !q || b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q);
     const matchCat = !cat || b.category === cat;
     const matchStatus = !status || (status === 'available' ? b.available > 0 : b.available === 0);
     return matchQ && matchCat && matchStatus;
   });
-
-  if (!filtered.length) {
-    document.getElementById('booksContent').innerHTML = '<div class="loading">No books found.</div>';
-    return;
-  }
-
+  if (!filtered.length) { document.getElementById('booksContent').innerHTML = '<div class="loading">No books found.</div>'; return; }
   document.getElementById('booksContent').innerHTML = `
     <table>
       <thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Total</th><th>Available</th><th>Issued</th><th>Status</th><th>Actions</th></tr></thead>
-      <tbody>${filtered.map(b => `
-        <tr>
-          <td style="font-weight:500">${esc(b.title)}</td>
-          <td style="color:var(--muted)">${esc(b.author)}</td>
-          <td><span class="badge badge-cat">${esc(b.category)}</span></td>
-          <td>${b.copies}</td>
-          <td style="color:var(--success);font-weight:500">${b.available}</td>
-          <td style="color:#8c3a0c">${b.issued_count}</td>
-          <td>${b.available===0 ? '<span class="badge badge-issued">All Issued</span>' : '<span class="badge badge-available">Available</span>'}</td>
-          <td><div class="action-btns">
-            ${b.available > 0 ? `<button class="btn btn-sm btn-success" onclick="openIssue(${b.id})">Issue</button>` : ''}
-            <button class="btn btn-sm btn-outline" onclick="editBook(${b.id})">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteBook(${b.id})">Delete</button>
-          </div></td>
-        </tr>`).join('')}
-      </tbody>
+      <tbody>${filtered.map(b => `<tr>
+        <td style="font-weight:500">${esc(b.title)}</td>
+        <td style="color:var(--muted)">${esc(b.author)}</td>
+        <td><span class="badge badge-cat">${esc(b.category)}</span></td>
+        <td>${b.copies}</td>
+        <td style="color:var(--success);font-weight:500">${b.available}</td>
+        <td style="color:#8c3a0c">${b.issued_count}</td>
+        <td>${b.available===0?'<span class="badge badge-issued">All Issued</span>':'<span class="badge badge-available">Available</span>'}</td>
+        <td><div class="action-btns">
+          ${b.available>0?`<button class="btn btn-sm btn-success" onclick="openIssue('${b.id}')">Issue</button>`:''}
+          <button class="btn btn-sm btn-outline" onclick="editBook('${b.id}')">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteBook('${b.id}')">Delete</button>
+        </div></td>
+      </tr>`).join('')}</tbody>
     </table>`;
 }
 
 // ── ISSUED ───────────────────────────────────────────────────────────────────
-
 async function loadIssued() {
   setLoading('issuedContent');
   try {
-    issuances = await apiFetch('/issuances?active=true');
+    issuances = await apiGet('getIssuances');
     renderIssued();
-  } catch(e) {
-    document.getElementById('issuedContent').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
-  }
+  } catch(e) { document.getElementById('issuedContent').innerHTML = `<div class="alert alert-error">${e.message}</div>`; }
 }
 
 function renderIssued() {
   const q = document.getElementById('searchIssued').value.toLowerCase();
-  const filtered = issuances.filter(i =>
-    !q || i.book_title.toLowerCase().includes(q) || i.member.toLowerCase().includes(q)
-  );
-  if (!filtered.length) {
-    document.getElementById('issuedContent').innerHTML = '<div class="loading">No issued books.</div>';
-    return;
-  }
+  const filtered = issuances.filter(i => !q || (i.book_title||'').toLowerCase().includes(q) || i.member.toLowerCase().includes(q));
+  if (!filtered.length) { document.getElementById('issuedContent').innerHTML = '<div class="loading">No issued books.</div>'; return; }
   document.getElementById('issuedContent').innerHTML = `
     <table>
       <thead><tr><th>Book Title</th><th>Member</th><th>Member ID</th><th>Issue Date</th><th>Due Date</th><th>Days Left</th><th>Actions</th></tr></thead>
@@ -392,7 +371,7 @@ function renderIssued() {
         const days = daysFromToday(i.due_date);
         let daysCell = `${days} days left`, cls = '';
         if (days < 0) { daysCell = `${Math.abs(days)} days overdue`; cls = 'overdue-text'; }
-        else if (days <= 3) { cls = 'due-soon'; daysCell = `${days} day${days===1?'':'s'} left`; }
+        else if (days <= 3) { cls = 'due-soon'; }
         return `<tr>
           <td style="font-weight:500">${esc(i.book_title)}</td>
           <td>${esc(i.member)}</td>
@@ -400,18 +379,17 @@ function renderIssued() {
           <td>${fmtDate(i.issue_date)}</td>
           <td>${fmtDate(i.due_date)}</td>
           <td class="${cls}">${daysCell}</td>
-          <td><button class="btn btn-sm btn-outline" onclick="returnBook(${i.id})">Return</button></td>
+          <td><button class="btn btn-sm btn-outline" onclick="returnBook('${i.id}')">Return</button></td>
         </tr>`;
       }).join('')}</tbody>
     </table>`;
 }
 
 // ── OVERDUE ──────────────────────────────────────────────────────────────────
-
 async function loadOverdue() {
   setLoading('overdueContent');
   try {
-    const all = await apiFetch('/issuances?active=true');
+    const all = await apiGet('getIssuances');
     const overdueList = all.filter(i => daysFromToday(i.due_date) < 0);
     let html = overdueList.length
       ? `<div class="alert alert-warning">${overdueList.length} book${overdueList.length>1?'s are':' is'} overdue.</div>`
@@ -427,23 +405,20 @@ async function loadOverdue() {
             <td style="color:var(--muted);font-size:12px">${esc(i.member_id)}</td>
             <td>${fmtDate(i.due_date)}</td>
             <td class="overdue-text">${days} day${days===1?'':'s'}</td>
-            <td><button class="btn btn-sm btn-outline" onclick="returnBook(${i.id})">Return</button></td>
+            <td><button class="btn btn-sm btn-outline" onclick="returnBook('${i.id}')">Return</button></td>
           </tr>`;
         }).join('')}</tbody>
       </table>`;
     }
     document.getElementById('overdueContent').innerHTML = html;
-  } catch(e) {
-    document.getElementById('overdueContent').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
-  }
+  } catch(e) { document.getElementById('overdueContent').innerHTML = `<div class="alert alert-error">${e.message}</div>`; }
 }
 
 // ── HISTORY ──────────────────────────────────────────────────────────────────
-
 async function loadHistory() {
   setLoading('historyContent');
   try {
-    const rows = await apiFetch('/history');
+    const rows = await apiGet('getHistory');
     if (!rows.length) { document.getElementById('historyContent').innerHTML = '<div class="loading">No history yet.</div>'; return; }
     document.getElementById('historyContent').innerHTML = `
       <table>
@@ -455,143 +430,131 @@ async function loadHistory() {
           <td>${fmtDate(i.issue_date)}</td>
           <td>${fmtDate(i.due_date)}</td>
           <td>${fmtDate(i.returned_at)}</td>
-          <td>${i.returned_at
-            ? '<span class="badge badge-returned">Returned</span>'
-            : daysFromToday(i.due_date) < 0
-              ? '<span class="badge badge-overdue">Overdue</span>'
-              : '<span class="badge badge-issued">Active</span>'
-          }</td>
+          <td>${i.returned_at ? '<span class="badge badge-returned">Returned</span>' : daysFromToday(i.due_date)<0 ? '<span class="badge badge-overdue">Overdue</span>' : '<span class="badge badge-issued">Active</span>'}</td>
         </tr>`).join('')}</tbody>
       </table>`;
-  } catch(e) {
-    document.getElementById('historyContent').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
-  }
+  } catch(e) { document.getElementById('historyContent').innerHTML = `<div class="alert alert-error">${e.message}</div>`; }
 }
 
 // ── TABS ─────────────────────────────────────────────────────────────────────
-
 function switchTab(name, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
-  if (name === 'issued') loadIssued();
-  if (name === 'overdue') loadOverdue();
-  if (name === 'history') loadHistory();
+  if (name==='issued') loadIssued();
+  if (name==='overdue') loadOverdue();
+  if (name==='history') loadHistory();
 }
 
-// ── ADD / EDIT BOOK ──────────────────────────────────────────────────────────
-
+// ── ADD/EDIT BOOK ─────────────────────────────────────────────────────────────
 function openAddBook() {
   editingBookId = null;
   document.getElementById('modalTitle').textContent = 'Add New Book';
-  ['f-title','f-author','f-isbn'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('f-cat').value = 'Fiction';
-  document.getElementById('f-copies').value = 1;
-  document.getElementById('addBookModal').style.display = 'flex';
+  ['f-title','f-author','f-isbn'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('f-cat').value='Fiction';
+  document.getElementById('f-copies').value=1;
+  document.getElementById('addBookModal').style.display='flex';
 }
 
 function editBook(id) {
-  const b = books.find(b => b.id === id); if (!b) return;
+  const b = books.find(b => b.id===id); if (!b) return;
   editingBookId = id;
-  document.getElementById('modalTitle').textContent = 'Edit Book';
-  document.getElementById('f-title').value = b.title;
-  document.getElementById('f-author').value = b.author;
-  document.getElementById('f-isbn').value = b.isbn || '';
-  document.getElementById('f-cat').value = b.category || 'Fiction';
-  document.getElementById('f-copies').value = b.copies;
-  document.getElementById('addBookModal').style.display = 'flex';
+  document.getElementById('modalTitle').textContent='Edit Book';
+  document.getElementById('f-title').value=b.title;
+  document.getElementById('f-author').value=b.author;
+  document.getElementById('f-isbn').value=b.isbn||'';
+  document.getElementById('f-cat').value=b.category||'Fiction';
+  document.getElementById('f-copies').value=b.copies;
+  document.getElementById('addBookModal').style.display='flex';
 }
 
 async function saveBook() {
   const title = document.getElementById('f-title').value.trim();
   const author = document.getElementById('f-author').value.trim();
-  if (!title || !author) { toast('Title and author are required', true); return; }
+  if (!title||!author) { toast('Title and author are required', true); return; }
   const payload = { title, author, isbn: document.getElementById('f-isbn').value.trim(), category: document.getElementById('f-cat').value, copies: parseInt(document.getElementById('f-copies').value)||1 };
   const btn = document.getElementById('saveBookBtn');
-  btn.disabled = true; btn.textContent = 'Saving...';
+  btn.disabled=true; btn.textContent='Saving...';
   try {
     if (editingBookId) {
-      const updated = await apiFetch(`/books/${editingBookId}`, { method: 'PUT', body: payload });
-      books = books.map(b => b.id === editingBookId ? updated : b);
+      await apiPost({ action:'updateBook', id:editingBookId, ...payload });
     } else {
-      const newBook = await apiFetch('/books', { method: 'POST', body: payload });
-      books.push(newBook);
+      await apiPost({ action:'addBook', ...payload });
     }
     closeModal('addBookModal');
-    populateCatFilter(); renderBooks(); loadStats();
+    await loadBooks(); await loadStats();
     toast(editingBookId ? 'Book updated!' : 'Book added!');
   } catch(e) { toast(e.message, true); }
-  finally { btn.disabled = false; btn.textContent = 'Save Book'; }
+  finally { btn.disabled=false; btn.textContent='Save Book'; }
 }
 
 async function deleteBook(id) {
-  if (!confirm('Delete this book from the library?')) return;
+  if (!confirm('Delete this book?')) return;
   try {
-    await apiFetch(`/books/${id}`, { method: 'DELETE' });
-    books = books.filter(b => b.id !== id);
-    renderBooks(); loadStats(); toast('Book deleted.');
+    await apiPost({ action:'deleteBook', id });
+    await loadBooks(); await loadStats();
+    toast('Book deleted.');
   } catch(e) { toast(e.message, true); }
 }
 
-// ── ISSUE ────────────────────────────────────────────────────────────────────
-
+// ── ISSUE ─────────────────────────────────────────────────────────────────────
 function openIssue(bookId) {
   issuingBookId = bookId;
-  const book = books.find(b => b.id === bookId);
-  document.getElementById('issueBookName').textContent = 'Issuing: ' + (book ? book.title : '');
-  document.getElementById('i-member').value = '';
-  document.getElementById('i-memberid').value = '';
-  const todayStr = today.toISOString().split('T')[0];
-  document.getElementById('i-issuedate').value = todayStr;
-  const due = new Date(today); due.setDate(due.getDate()+14);
-  document.getElementById('i-duedate').value = due.toISOString().split('T')[0];
-  document.getElementById('issueModal').style.display = 'flex';
+  const book = books.find(b => b.id===bookId);
+  document.getElementById('issueBookName').textContent = 'Issuing: '+(book?book.title:'');
+  document.getElementById('i-member').value='';
+  document.getElementById('i-memberid').value='';
+  const todayStr = todayDate.toISOString().split('T')[0];
+  document.getElementById('i-issuedate').value=todayStr;
+  const due = new Date(todayDate); due.setDate(due.getDate()+14);
+  document.getElementById('i-duedate').value=due.toISOString().split('T')[0];
+  document.getElementById('issueModal').style.display='flex';
 }
 
 async function confirmIssue() {
-  const member = document.getElementById('i-member').value.trim();
-  const memberId = document.getElementById('i-memberid').value.trim();
-  const issueDate = document.getElementById('i-issuedate').value;
-  const dueDate = document.getElementById('i-duedate').value;
-  if (!member || !memberId || !issueDate || !dueDate) { toast('Fill in all fields', true); return; }
-  const btn = document.getElementById('issueBtn');
-  btn.disabled = true; btn.textContent = 'Issuing...';
+  const member=document.getElementById('i-member').value.trim();
+  const memberId=document.getElementById('i-memberid').value.trim();
+  const issueDate=document.getElementById('i-issuedate').value;
+  const dueDate=document.getElementById('i-duedate').value;
+  if (!member||!memberId||!issueDate||!dueDate) { toast('Fill in all fields', true); return; }
+  const btn=document.getElementById('issueBtn');
+  btn.disabled=true; btn.textContent='Issuing...';
   try {
-    await apiFetch('/issuances', { method: 'POST', body: { book_id: issuingBookId, member, member_id: memberId, issue_date: issueDate, due_date: dueDate } });
-    books = await apiFetch('/books');
+    await apiPost({ action:'issueBook', book_id:issuingBookId, member, member_id:memberId, issue_date:issueDate, due_date:dueDate });
     closeModal('issueModal');
-    populateCatFilter(); renderBooks(); loadStats();
-    toast('Book issued successfully!');
+    await loadBooks(); await loadStats();
+    toast('Book issued!');
   } catch(e) { toast(e.message, true); }
-  finally { btn.disabled = false; btn.textContent = 'Issue Book'; }
+  finally { btn.disabled=false; btn.textContent='Issue Book'; }
 }
 
-async function returnBook(issuanceId) {
-  if (!confirm('Mark this book as returned?')) return;
+async function returnBook(id) {
+  if (!confirm('Mark as returned?')) return;
   try {
-    await apiFetch(`/issuances/${issuanceId}/return`, { method: 'POST' });
-    books = await apiFetch('/books');
-    populateCatFilter(); renderBooks(); loadStats();
+    await apiPost({ action:'returnBook', id });
+    await loadBooks(); await loadStats();
     if (document.getElementById('panel-issued').classList.contains('active')) loadIssued();
     if (document.getElementById('panel-overdue').classList.contains('active')) loadOverdue();
     toast('Book returned!');
   } catch(e) { toast(e.message, true); }
 }
 
-// ── UTILS ────────────────────────────────────────────────────────────────────
-
-function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-function backdropClose(e, id) { if (e.target === e.currentTarget) closeModal(id); }
-
-// ── INIT ─────────────────────────────────────────────────────────────────────
-
-(async function init() {
-  await checkApi();
+// ── INIT ──────────────────────────────────────────────────────────────────────
+async function init() {
+  if (!API_URL) {
+    setStatus(false, 'Paste your Apps Script URL to connect');
+    return;
+  }
+  document.getElementById('configBanner').style.display = 'none';
+  document.getElementById('apiUrlInput').value = API_URL;
+  setStatus(false, 'Connecting...');
+  document.getElementById('apiDot').className = 'dot checking';
   await loadStats();
   await loadBooks();
-})();
+}
+
+init();
 </script>
 </body>
 </html>
