@@ -109,19 +109,7 @@ tr:hover td { background: rgba(200,146,42,0.04); }
     <p>Powered by Google Sheets — data saved forever, free</p>
     <div class="api-status">
       <div class="dot checking" id="apiDot"></div>
-      <span id="apiStatusText">Waiting for API URL...</span>
-    </div>
-  </div>
-
-  <!-- CONFIG BANNER -->
-  <div class="config-banner" id="configBanner">
-    <h3>One-time Setup — Paste your Google Apps Script URL</h3>
-    <p>After deploying your Apps Script as a Web App, paste the URL below. This is saved in your browser so you only do this once.</p>
-    <input type="text" id="apiUrlInput" placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec">
-    <div class="btn-row">
-      <button class="btn btn-gold" onclick="saveApiUrl()">Save & Connect</button>
-      <button class="btn-outline" onclick="document.getElementById('configBanner').style.display='none'">Hide</button>
-    </div>
+      <span id="apiStatusText">Connecting to Google Sheets...</span>    </div>
   </div>
 
   <div class="stats-grid" id="statsGrid">
@@ -220,20 +208,9 @@ tr:hover td { background: rgba(200,146,42,0.04); }
 
 <script>
 // ── CONFIG ───────────────────────────────────────────────────────────────────
-const STORAGE_KEY = 'library_api_url';
-let API_URL = localStorage.getItem(STORAGE_KEY) || '';
+const API_URL = "https://script.google.com/macros/s/AKfycbzhltn6C8FceX6wm1qmb0zxy_4lPOzOUmitKNpsXMed6t84ULBSpjtXbIoqv48DMPz1/exec";
 let books = [], issuances = [], editingBookId = null, issuingBookId = null;
 const todayDate = new Date(); todayDate.setHours(0,0,0,0);
-
-function saveApiUrl() {
-  const val = document.getElementById('apiUrlInput').value.trim();
-  if (!val.startsWith('https://script.google.com')) { toast('Please paste a valid Google Apps Script URL', true); return; }
-  API_URL = val;
-  localStorage.setItem(STORAGE_KEY, API_URL);
-  document.getElementById('configBanner').style.display = 'none';
-  toast('API URL saved!');
-  init();
-}
 
 // ── API ──────────────────────────────────────────────────────────────────────
 async function apiGet(action) {
@@ -542,12 +519,6 @@ async function returnBook(id) {
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 async function init() {
-  if (!API_URL) {
-    setStatus(false, 'Paste your Apps Script URL to connect');
-    return;
-  }
-  document.getElementById('configBanner').style.display = 'none';
-  document.getElementById('apiUrlInput').value = API_URL;
   setStatus(false, 'Connecting...');
   document.getElementById('apiDot').className = 'dot checking';
   await loadStats();
