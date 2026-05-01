@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library Management System</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #1a1209; --parchment: #fdf8f0; --warm-brown: #6b4226;
+  --gold: #c8922a; --cream: #f5edda; --card-bg: #fffcf5;
+  --border: rgba(107,66,38,0.15); --success: #2d6a4f; --danger: #9b2335; --muted: #7a6a55;
+}
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--parchment); color: var(--ink); }
+.app { max-width: 1020px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+/* HEADER */
+.header { text-align: center; padding: 2rem 0 2.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+.header-badge { display: inline-block; background: var(--warm-brown); color: #f5edda; font-size: 11px; padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+.header h1 { font-size: 30px; font-weight: 700; color: var(--warm-brown); letter-spacing: -0.5px; }
+.header p { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+/* API STATUS */
+.api-status { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); justify-content: center; margin-top: 10px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; }
+.dot.online { background: #2d6a4f; }
+.dot.offline { background: var(--danger); }
+
+/* STATS */
+.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 2rem; }
+.stat-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
+.stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 7px; }
+.stat-value { font-size: 26px; font-weight: 700; color: var(--warm-brown); }
+.stat-value.danger { color: var(--danger); }
+.stat-value.success { color: var(--success); }
+
+/* TABS */
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+.tab { padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; border-radius: 8px 8px 0 0; border: 1px solid transparent; border-bottom: none; color: var(--muted); background: transparent; margin-bottom: -1px; }
+.tab.active { background: var(--card-bg); border-color: var(--border); color: var(--warm-brown); }
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* TOOLBAR */
+.toolbar { display: flex; gap: 10px; margin-bottom: 1.2rem; flex-wrap: wrap; }
+.toolbar input, .toolbar select { flex: 1; min-width: 140px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 13px; color: var(--ink); outline: none; }
+.toolbar input:focus, .toolbar select:focus { border-color: var(--gold); }
+.toolbar select { max-width: 160px; }
+
+/* BUTTONS */
+.btn { background: var(--warm-brown); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+.btn:hover { background: #5a3520; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-outline { background: transparent; color: var(--warm-brown); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer; }
+.btn-outline:hover { background: var(--cream); }
+.btn-sm { padding: 4px 11px; font-size: 12px; border-radius: 6px; }
+.btn-danger { background: var(--danger); }
+.btn-danger:hover { background: #7d1c2a; }
+.btn-success { background: var(--success); }
+.btn-success:hover { background: #1f4d38; }
+
+/* TABLE */
+table { width: 100%; border-collapse: collapse; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; font-size: 13px; }
+thead { background: var(--cream); }
+th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); font-weight: 500; padding: 10px 13px; text-align: left; }
+td { padding: 10px 13px; border-top: 1px solid var(--border); }
+tr:hover td { background: rgba(200,146,42,0.04); }
+
+/* BADGES */
+.badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+.badge-available { background: #d4edda; color: #1a5c33; }
+.badge-issued { background: #fde8d4; color: #8c3a0c; }
+.badge-overdue { background: #fcd4d4; color: var(--danger); }
+.badge-cat { background: var(--cream); color: var(--warm-brown); border: 1px solid var(--border); }
+.badge-returned { background: #e2e8f0; color: #475569; }
+.due-soon { color: #b85c00; font-weight: 500; }
+.overdue-text { color: var(--danger); font-weight: 500; }
+
+/* MODAL */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(26,18,9,0.45); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+.modal { background: var(--parchment); border-radius: 14px; padding: 1.8rem; width: 100%; max-width: 500px; border: 1px solid var(--border); }
+.modal h2 { font-size: 20px; font-weight: 700; color: var(--warm-brown); margin-bottom: 1.4rem; }
+.form-row { margin-bottom: 0.9rem; }
+.form-row label { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
+.form-row input, .form-row select { width: 100%; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px; font-size: 13px; color: var(--ink); outline: none; }
+.form-row input:focus, .form-row select:focus { border-color: var(--gold); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 1.4rem; }
+.modal-close { float: right; background: none; border: none; font-size: 20px; color: var(--muted); cursor: pointer; line-height: 1; }
+
+/* ALERTS */
+.alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 1rem; }
+.alert-warning { background: #fff3cd; color: #7d5200; border: 1px solid #e8c46a; }
+.alert-info { background: #d4edda; color: #1a5c33; border: 1px solid #a3d3b0; }
+.alert-error { background: #fcd4d4; color: var(--danger); border: 1px solid #f7c1c1; }
+
+/* LOADING */
+.loading { text-align: center; padding: 2rem; color: var(--muted); font-size: 13px; }
+.spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--warm-brown); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ACTION BTNS */
+.action-btns { display: flex; gap: 5px; }
+
+/* TOAST */
+#toast { position: fixed; bottom: 24px; right: 24px; background: #1a1209; color: #fff; padding: 10px 18px; border-radius: 10px; font-size: 13px; opacity: 0; transition: opacity 0.3s; z-index: 999; pointer-events: none; }
+#toast.show { opacity: 1; }
+
+/* HISTORY */
+.history-pill { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 11px; }
+
+@media (max-width: 700px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <div class="header-badge">Library System</div>
+    <h1>Library Management System</h1>
+    <p>Manage books, issuances, and due dates</p>
+    <div class="api-status">
+      <div class="dot" id="apiDot"></div>
+      <span id="apiStatusText">Connecting to API...</span>
+    </div>
+  </div>
+
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card"><div class="stat-label">Total Titles</div><div class="stat-value">—</div></div>
+    <div class="stat-card"><div class="stat-label">Total Copies</div><div class="stat-value">—</div></div>
+    <div class="stat-card"><div class="stat-label">Available</div><div class="stat-value">—</div></div>
+    <div class="stat-card"><div class="stat-label">Issued</div><div class="stat-value">—</div></div>
+    <div class="stat-card"><div class="stat-label">Overdue</div><div class="stat-value">—</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('books', this)">All Books</button>
+    <button class="tab" onclick="switchTab('issued', this)">Issued Books</button>
+    <button class="tab" onclick="switchTab('overdue', this)">Overdue</button>
+    <button class="tab" onclick="switchTab('history', this)">History</button>
+  </div>
+
+  <!-- BOOKS PANEL -->
+  <div id="panel-books" class="panel active">
+    <div class="toolbar">
+      <input type="text" id="searchBooks" placeholder="Search by title or author..." oninput="renderBooks()">
+      <select id="filterCat" onchange="renderBooks()">
+        <option value="">All Categories</option>
+      </select>
+      <select id="filterStatus" onchange="renderBooks()">
+        <option value="">All Status</option>
+        <option value="available">Available</option>
+        <option value="issued">Fully Issued</option>
+      </select>
+      <button class="btn" onclick="openAddBook()">+ Add Book</button>
+    </div>
+    <div id="booksContent"><div class="loading"><span class="spinner"></span>Loading books...</div></div>
+  </div>
+
+  <!-- ISSUED PANEL -->
+  <div id="panel-issued" class="panel">
+    <div class="toolbar">
+      <input type="text" id="searchIssued" placeholder="Search by title or member..." oninput="renderIssued()">
+    </div>
+    <div id="issuedContent"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+  </div>
+
+  <!-- OVERDUE PANEL -->
+  <div id="panel-overdue" class="panel">
+    <div id="overdueContent"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+  </div>
+
+  <!-- HISTORY PANEL -->
+  <div id="panel-history" class="panel">
+    <div id="historyContent"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+  </div>
+</div>
+
+<!-- ADD/EDIT BOOK MODAL -->
+<div id="addBookModal" style="display:none" class="modal-backdrop" onclick="backdropClose(event,'addBookModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('addBookModal')">×</button>
+    <h2 id="modalTitle">Add New Book</h2>
+    <div class="form-grid">
+      <div class="form-row" style="grid-column:span 2">
+        <label>Book Title *</label>
+        <input id="f-title" type="text" placeholder="Enter book title">
+      </div>
+      <div class="form-row">
+        <label>Author *</label>
+        <input id="f-author" type="text" placeholder="Author name">
+      </div>
+      <div class="form-row">
+        <label>ISBN</label>
+        <input id="f-isbn" type="text" placeholder="ISBN number">
+      </div>
+      <div class="form-row">
+        <label>Category</label>
+        <select id="f-cat">
+          <option>Fiction</option><option>Non-Fiction</option><option>Science</option>
+          <option>History</option><option>Technology</option><option>Arts</option>
+          <option>Biography</option><option>Children</option><option>Reference</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Total Copies</label>
+        <input id="f-copies" type="number" value="1" min="1">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('addBookModal')">Cancel</button>
+      <button class="btn" id="saveBookBtn" onclick="saveBook()">Save Book</button>
+    </div>
+  </div>
+</div>
+
+<!-- ISSUE MODAL -->
+<div id="issueModal" style="display:none" class="modal-backdrop" onclick="backdropClose(event,'issueModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('issueModal')">×</button>
+    <h2>Issue Book</h2>
+    <p id="issueBookName" style="font-size:13px;color:var(--muted);margin-bottom:1.2rem;"></p>
+    <div class="form-row"><label>Member Name *</label><input id="i-member" type="text" placeholder="Full name"></div>
+    <div class="form-row"><label>Member ID *</label><input id="i-memberid" type="text" placeholder="Library card number"></div>
+    <div class="form-grid">
+      <div class="form-row"><label>Issue Date *</label><input id="i-issuedate" type="date"></div>
+      <div class="form-row"><label>Due Date *</label><input id="i-duedate" type="date"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('issueModal')">Cancel</button>
+      <button class="btn btn-success" id="issueBtn" onclick="confirmIssue()">Issue Book</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = 'http://localhost:5000/api';
+let books = [], issuances = [], editingBookId = null, issuingBookId = null;
+const today = new Date(); today.setHours(0,0,0,0);
+
+// ── API ──────────────────────────────────────────────────────────────────────
+
+async function apiFetch(path, opts={}) {
+  const res = await fetch(API + path, {
+    headers: { 'Content-Type': 'application/json' },
+    ...opts,
+    body: opts.body ? JSON.stringify(opts.body) : undefined
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+async function checkApi() {
+  try {
+    await apiFetch('/stats');
+    document.getElementById('apiDot').className = 'dot online';
+    document.getElementById('apiStatusText').textContent = 'API connected · localhost:5000';
+  } catch {
+    document.getElementById('apiDot').className = 'dot offline';
+    document.getElementById('apiStatusText').textContent = 'API offline — start app.py to connect';
+  }
+}
+
+// ── TOAST ────────────────────────────────────────────────────────────────────
+
+function toast(msg, err=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = err ? '#9b2335' : '#1a1209';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+
+function daysFromToday(dateStr) {
+  const d = new Date(dateStr); d.setHours(0,0,0,0);
+  return Math.round((d - today) / 86400000);
+}
+function fmtDate(str) {
+  if (!str) return '—';
+  return new Date(str).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+function setLoading(id, msg='Loading...') {
+  document.getElementById(id).innerHTML = `<div class="loading"><span class="spinner"></span>${msg}</div>`;
+}
+
+// ── STATS ────────────────────────────────────────────────────────────────────
+
+async function loadStats() {
+  try {
+    const s = await apiFetch('/stats');
+    document.getElementById('statsGrid').innerHTML = `
+      <div class="stat-card"><div class="stat-label">Total Titles</div><div class="stat-value">${s.total_books}</div></div>
+      <div class="stat-card"><div class="stat-label">Total Copies</div><div class="stat-value">${s.total_copies}</div></div>
+      <div class="stat-card"><div class="stat-label">Available</div><div class="stat-value success">${s.available}</div></div>
+      <div class="stat-card"><div class="stat-label">Issued</div><div class="stat-value">${s.total_issued}</div></div>
+      <div class="stat-card"><div class="stat-label">Overdue</div><div class="stat-value danger">${s.overdue}</div></div>
+    `;
+  } catch { /* silent */ }
+}
+
+// ── BOOKS ────────────────────────────────────────────────────────────────────
+
+async function loadBooks() {
+  try {
+    books = await apiFetch('/books');
+    populateCatFilter();
+    renderBooks();
+  } catch(e) {
+    document.getElementById('booksContent').innerHTML = `<div class="alert alert-error">Failed to load books: ${e.message}</div>`;
+  }
+}
+
+function populateCatFilter() {
+  const cats = [...new Set(books.map(b => b.category).filter(Boolean))].sort();
+  const sel = document.getElementById('filterCat');
+  const val = sel.value;
+  sel.innerHTML = '<option value="">All Categories</option>' + cats.map(c => `<option value="${c}" ${c===val?'selected':''}>${c}</option>`).join('');
+}
+
+function renderBooks() {
+  const q = document.getElementById('searchBooks').value.toLowerCase();
+  const cat = document.getElementById('filterCat').value;
+  const status = document.getElementById('filterStatus').value;
+
+  const filtered = books.filter(b => {
+    const matchQ = !q || b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q);
+    const matchCat = !cat || b.category === cat;
+    const matchStatus = !status || (status === 'available' ? b.available > 0 : b.available === 0);
+    return matchQ && matchCat && matchStatus;
+  });
+
+  if (!filtered.length) {
+    document.getElementById('booksContent').innerHTML = '<div class="loading">No books found.</div>';
+    return;
+  }
+
+  document.getElementById('booksContent').innerHTML = `
+    <table>
+      <thead><tr><th>Title</th><th>Author</th><th>Category</th><th>Total</th><th>Available</th><th>Issued</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>${filtered.map(b => `
+        <tr>
+          <td style="font-weight:500">${esc(b.title)}</td>
+          <td style="color:var(--muted)">${esc(b.author)}</td>
+          <td><span class="badge badge-cat">${esc(b.category)}</span></td>
+          <td>${b.copies}</td>
+          <td style="color:var(--success);font-weight:500">${b.available}</td>
+          <td style="color:#8c3a0c">${b.issued_count}</td>
+          <td>${b.available===0 ? '<span class="badge badge-issued">All Issued</span>' : '<span class="badge badge-available">Available</span>'}</td>
+          <td><div class="action-btns">
+            ${b.available > 0 ? `<button class="btn btn-sm btn-success" onclick="openIssue(${b.id})">Issue</button>` : ''}
+            <button class="btn btn-sm btn-outline" onclick="editBook(${b.id})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteBook(${b.id})">Delete</button>
+          </div></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+// ── ISSUED ───────────────────────────────────────────────────────────────────
+
+async function loadIssued() {
+  setLoading('issuedContent');
+  try {
+    issuances = await apiFetch('/issuances?active=true');
+    renderIssued();
+  } catch(e) {
+    document.getElementById('issuedContent').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
+  }
+}
+
+function renderIssued() {
+  const q = document.getElementById('searchIssued').value.toLowerCase();
+  const filtered = issuances.filter(i =>
+    !q || i.book_title.toLowerCase().includes(q) || i.member.toLowerCase().includes(q)
+  );
+  if (!filtered.length) {
+    document.getElementById('issuedContent').innerHTML = '<div class="loading">No issued books.</div>';
+    return;
+  }
+  document.getElementById('issuedContent').innerHTML = `
+    <table>
+      <thead><tr><th>Book Title</th><th>Member</th><th>Member ID</th><th>Issue Date</th><th>Due Date</th><th>Days Left</th><th>Actions</th></tr></thead>
+      <tbody>${filtered.map(i => {
+        const days = daysFromToday(i.due_date);
+        let daysCell = `${days} days left`, cls = '';
+        if (days < 0) { daysCell = `${Math.abs(days)} days overdue`; cls = 'overdue-text'; }
+        else if (days <= 3) { cls = 'due-soon'; daysCell = `${days} day${days===1?'':'s'} left`; }
+        return `<tr>
+          <td style="font-weight:500">${esc(i.book_title)}</td>
+          <td>${esc(i.member)}</td>
+          <td style="color:var(--muted);font-size:12px">${esc(i.member_id)}</td>
+          <td>${fmtDate(i.issue_date)}</td>
+          <td>${fmtDate(i.due_date)}</td>
+          <td class="${cls}">${daysCell}</td>
+          <td><button class="btn btn-sm btn-outline" onclick="returnBook(${i.id})">Return</button></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>`;
+}
+
+// ── OVERDUE ──────────────────────────────────────────────────────────────────
+
+async function loadOverdue() {
+  setLoading('overdueContent');
+  try {
+    const all = await apiFetch('/issuances?active=true');
+    const overdueList = all.filter(i => daysFromToday(i.due_date) < 0);
+    let html = overdueList.length
+      ? `<div class="alert alert-warning">${overdueList.length} book${overdueList.length>1?'s are':' is'} overdue.</div>`
+      : `<div class="alert alert-info">No overdue books right now.</div>`;
+    if (overdueList.length) {
+      html += `<table>
+        <thead><tr><th>Book Title</th><th>Member</th><th>Member ID</th><th>Due Date</th><th>Days Overdue</th><th>Actions</th></tr></thead>
+        <tbody>${overdueList.map(i => {
+          const days = Math.abs(daysFromToday(i.due_date));
+          return `<tr>
+            <td style="font-weight:500">${esc(i.book_title)}</td>
+            <td>${esc(i.member)}</td>
+            <td style="color:var(--muted);font-size:12px">${esc(i.member_id)}</td>
+            <td>${fmtDate(i.due_date)}</td>
+            <td class="overdue-text">${days} day${days===1?'':'s'}</td>
+            <td><button class="btn btn-sm btn-outline" onclick="returnBook(${i.id})">Return</button></td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>`;
+    }
+    document.getElementById('overdueContent').innerHTML = html;
+  } catch(e) {
+    document.getElementById('overdueContent').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
+  }
+}
+
+// ── HISTORY ──────────────────────────────────────────────────────────────────
+
+async function loadHistory() {
+  setLoading('historyContent');
+  try {
+    const rows = await apiFetch('/history');
+    if (!rows.length) { document.getElementById('historyContent').innerHTML = '<div class="loading">No history yet.</div>'; return; }
+    document.getElementById('historyContent').innerHTML = `
+      <table>
+        <thead><tr><th>Book Title</th><th>Member</th><th>Member ID</th><th>Issued</th><th>Due</th><th>Returned</th><th>Status</th></tr></thead>
+        <tbody>${rows.map(i => `<tr>
+          <td style="font-weight:500">${esc(i.book_title)}</td>
+          <td>${esc(i.member)}</td>
+          <td style="color:var(--muted);font-size:12px">${esc(i.member_id)}</td>
+          <td>${fmtDate(i.issue_date)}</td>
+          <td>${fmtDate(i.due_date)}</td>
+          <td>${fmtDate(i.returned_at)}</td>
+          <td>${i.returned_at
+            ? '<span class="badge badge-returned">Returned</span>'
+            : daysFromToday(i.due_date) < 0
+              ? '<span class="badge badge-overdue">Overdue</span>'
+              : '<span class="badge badge-issued">Active</span>'
+          }</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+  } catch(e) {
+    document.getElementById('historyContent').innerHTML = `<div class="alert alert-error">${e.message}</div>`;
+  }
+}
+
+// ── TABS ─────────────────────────────────────────────────────────────────────
+
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
+  if (name === 'issued') loadIssued();
+  if (name === 'overdue') loadOverdue();
+  if (name === 'history') loadHistory();
+}
+
+// ── ADD / EDIT BOOK ──────────────────────────────────────────────────────────
+
+function openAddBook() {
+  editingBookId = null;
+  document.getElementById('modalTitle').textContent = 'Add New Book';
+  ['f-title','f-author','f-isbn'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-cat').value = 'Fiction';
+  document.getElementById('f-copies').value = 1;
+  document.getElementById('addBookModal').style.display = 'flex';
+}
+
+function editBook(id) {
+  const b = books.find(b => b.id === id); if (!b) return;
+  editingBookId = id;
+  document.getElementById('modalTitle').textContent = 'Edit Book';
+  document.getElementById('f-title').value = b.title;
+  document.getElementById('f-author').value = b.author;
+  document.getElementById('f-isbn').value = b.isbn || '';
+  document.getElementById('f-cat').value = b.category || 'Fiction';
+  document.getElementById('f-copies').value = b.copies;
+  document.getElementById('addBookModal').style.display = 'flex';
+}
+
+async function saveBook() {
+  const title = document.getElementById('f-title').value.trim();
+  const author = document.getElementById('f-author').value.trim();
+  if (!title || !author) { toast('Title and author are required', true); return; }
+  const payload = { title, author, isbn: document.getElementById('f-isbn').value.trim(), category: document.getElementById('f-cat').value, copies: parseInt(document.getElementById('f-copies').value)||1 };
+  const btn = document.getElementById('saveBookBtn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  try {
+    if (editingBookId) {
+      const updated = await apiFetch(`/books/${editingBookId}`, { method: 'PUT', body: payload });
+      books = books.map(b => b.id === editingBookId ? updated : b);
+    } else {
+      const newBook = await apiFetch('/books', { method: 'POST', body: payload });
+      books.push(newBook);
+    }
+    closeModal('addBookModal');
+    populateCatFilter(); renderBooks(); loadStats();
+    toast(editingBookId ? 'Book updated!' : 'Book added!');
+  } catch(e) { toast(e.message, true); }
+  finally { btn.disabled = false; btn.textContent = 'Save Book'; }
+}
+
+async function deleteBook(id) {
+  if (!confirm('Delete this book from the library?')) return;
+  try {
+    await apiFetch(`/books/${id}`, { method: 'DELETE' });
+    books = books.filter(b => b.id !== id);
+    renderBooks(); loadStats(); toast('Book deleted.');
+  } catch(e) { toast(e.message, true); }
+}
+
+// ── ISSUE ────────────────────────────────────────────────────────────────────
+
+function openIssue(bookId) {
+  issuingBookId = bookId;
+  const book = books.find(b => b.id === bookId);
+  document.getElementById('issueBookName').textContent = 'Issuing: ' + (book ? book.title : '');
+  document.getElementById('i-member').value = '';
+  document.getElementById('i-memberid').value = '';
+  const todayStr = today.toISOString().split('T')[0];
+  document.getElementById('i-issuedate').value = todayStr;
+  const due = new Date(today); due.setDate(due.getDate()+14);
+  document.getElementById('i-duedate').value = due.toISOString().split('T')[0];
+  document.getElementById('issueModal').style.display = 'flex';
+}
+
+async function confirmIssue() {
+  const member = document.getElementById('i-member').value.trim();
+  const memberId = document.getElementById('i-memberid').value.trim();
+  const issueDate = document.getElementById('i-issuedate').value;
+  const dueDate = document.getElementById('i-duedate').value;
+  if (!member || !memberId || !issueDate || !dueDate) { toast('Fill in all fields', true); return; }
+  const btn = document.getElementById('issueBtn');
+  btn.disabled = true; btn.textContent = 'Issuing...';
+  try {
+    await apiFetch('/issuances', { method: 'POST', body: { book_id: issuingBookId, member, member_id: memberId, issue_date: issueDate, due_date: dueDate } });
+    books = await apiFetch('/books');
+    closeModal('issueModal');
+    populateCatFilter(); renderBooks(); loadStats();
+    toast('Book issued successfully!');
+  } catch(e) { toast(e.message, true); }
+  finally { btn.disabled = false; btn.textContent = 'Issue Book'; }
+}
+
+async function returnBook(issuanceId) {
+  if (!confirm('Mark this book as returned?')) return;
+  try {
+    await apiFetch(`/issuances/${issuanceId}/return`, { method: 'POST' });
+    books = await apiFetch('/books');
+    populateCatFilter(); renderBooks(); loadStats();
+    if (document.getElementById('panel-issued').classList.contains('active')) loadIssued();
+    if (document.getElementById('panel-overdue').classList.contains('active')) loadOverdue();
+    toast('Book returned!');
+  } catch(e) { toast(e.message, true); }
+}
+
+// ── UTILS ────────────────────────────────────────────────────────────────────
+
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+function backdropClose(e, id) { if (e.target === e.currentTarget) closeModal(id); }
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+
+(async function init() {
+  await checkApi();
+  await loadStats();
+  await loadBooks();
+})();
+</script>
+</body>
+</html>
